@@ -1,8 +1,8 @@
 // Require the Bolt package (github.com/slackapi/bolt)
 const { App } = require("@slack/bolt");
-const { db } = require("./db");
-const { msg } = require("./messages");
-const { users } = require("./users");
+const { db } = require("./src/db");
+const { msg } = require("./src/messages");
+const { users } = require("./src/users");
 
 const token = process.env.SLACK_BOT_TOKEN;
 
@@ -13,6 +13,7 @@ const app = new App({
 
 const chatChannel = process.env.CHAT_CHANNEL;
 
+// main loop
 app.event("message", async ({ event, context }) => {
   try {
     let conversation = await app.client.conversations.info({
@@ -72,7 +73,4 @@ app.event("message", async ({ event, context }) => {
   // Start your app
   await app.start(process.env.PORT || 3000);
   console.log("⚡️ Bolt app is running!");
-
-  let people = await db.getPeople();
-  console.log(people);
 })();
