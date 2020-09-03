@@ -20,7 +20,7 @@ async function addUser(userId, location) {
       index: index
     };
 
-    db.addPerson(people[index]);
+    await db.addPerson(people[index]);
 
     return true;
   } else {
@@ -33,11 +33,11 @@ async function addUser(userId, location) {
         people[i].location = location;
 
         if (people[i].added) {
-          db.updatePerson(people[i]);
+          await db.updatePerson(people[i]);
           return false;
         } else {
           people[i].added = true;
-          db.updatePerson(people[i]);
+          await db.updatePerson(people[i]);
           return true;
         }
       }
@@ -46,7 +46,8 @@ async function addUser(userId, location) {
 }
 
 async function removeUser(userId) {
-  return db.deletePerson(userId);
+  const result = await db.updatePerson({ id: userId, added: false });
+  return result.result.ok == 1;
 }
 
 async function matchUsers() {

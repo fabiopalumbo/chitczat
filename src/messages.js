@@ -3,7 +3,7 @@ const { db } = require("./db");
 const token = process.env.SLACK_BOT_TOKEN;
 
 let sendPeopleMessage = async (app, channel) => {
-  let message = "People who joined already: \n\n";
+  let message = "People who joined the queue: \n\n";
   let joined = false;
   let people = await db.getPeople();
 
@@ -22,15 +22,7 @@ let sendPeopleMessage = async (app, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: message
-          }
-        }
-      ]
+      text: message
     });
   } catch (error) {
     console.error(error);
@@ -42,15 +34,7 @@ let sendJoinedMessage = async (app, userId, text, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `<@${userId}> joined` + (text === "" ? "!" : ` from ${text}!`)
-          }
-        }
-      ]
+      text: `<@${userId}> joined` + (text === "" ? "!" : ` from ${text}!`)
     });
   } catch (error) {
     console.error(error);
@@ -62,15 +46,7 @@ async function sendLeaveMessage(app, userId, channel) {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `<@${userId}> left the chat queue.`
-          }
-        }
-      ]
+      text: `<@${userId}> left the chat queue.`
     });
   } catch (error) {
     console.error(error);
@@ -98,17 +74,7 @@ let sendMatchesMessage = async (app, matches, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: message
-          }
-        }
-      ],
-      // Text in the notification
-      text: "Matches are up!"
+      text: message
     });
   } catch (error) {
     console.error(error);

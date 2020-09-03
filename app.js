@@ -69,7 +69,7 @@ app.event("message", async ({ event, context }) => {
       let m = /\<\@([A-z0-9]*)\>(.*)/.exec(event.text);
 
       if (m !== null) {
-        if (await users.removeUser(event.user)) {
+        if (await users.removeUser(m[1])) {
           msg.sendLeaveMessage(app, m[1], event.channel);
         }
       } else {

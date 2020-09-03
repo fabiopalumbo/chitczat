@@ -49,21 +49,11 @@ let updatePerson = async person => {
   const client = getClient();
   await client.connect();
   const collection = client.db(database).collection("people");
-  person = await collection.replaceOne({ id: person.id }, person);
+  const result = await collection.update({ id: person.id }, { $set: person });
   await client.close();
 
-  return person;
+  return result;
 };
-
-async function deletePerson(id) {
-  const client = getClient();
-  await client.connect();
-  const collection = client.db(database).collection("people");
-  const doc = await collection.deleteOne({ id: id });
-  await client.close();
-
-  return doc;
-}
 
 async function getMatches() {
   const client = getClient();
@@ -108,7 +98,6 @@ module.exports = {
     getPeople: getPeople,
     addPerson: addPerson,
     updatePerson: updatePerson,
-    deletePerson: deletePerson,
     getCount: getCount,
     getMatches: getMatches,
     addMatch: addMatch,
