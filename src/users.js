@@ -1,13 +1,12 @@
 const { db } = require("./db");
 const { matchPeople } = require("./matching");
 
-
-async function addUser(user_id, location) {
+async function addUser(userId, location) {
   let u = undefined;
   let people = await db.getPeople();
 
   for (var i in people) {
-    if (people[i].id == user_id) {
+    if (people[i].id == userId) {
       u = people[i];
     }
   }
@@ -15,7 +14,7 @@ async function addUser(user_id, location) {
   if (u === undefined) {
     let index = await db.getCount();
     people[index] = {
-      id: user_id,
+      id: userId,
       added: true,
       location: location,
       index: index
@@ -30,7 +29,7 @@ async function addUser(user_id, location) {
     }
 
     for (var i in people) {
-      if (people[i].id == user_id) {
+      if (people[i].id == userId) {
         people[i].location = location;
 
         if (people[i].added) {
@@ -44,6 +43,10 @@ async function addUser(user_id, location) {
       }
     }
   }
+}
+
+async function removeUser(userId) {
+  return db.deletePerson(userId);
 }
 
 async function matchUsers() {
@@ -67,6 +70,7 @@ async function matchUsers() {
 module.exports = {
   users: {
     addUser: addUser,
+    removeUser: removeUser,
     matchUsers: matchUsers
   }
 };

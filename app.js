@@ -64,6 +64,22 @@ app.event("message", async ({ event, context }) => {
       }
       return;
     }
+
+    if (event.text.startsWith("!leave")) {
+      let m = /\<\@([A-z0-9]*)\>(.*)/.exec(event.text);
+
+      if (m !== null) {
+        if (await users.removeUser(event.user)) {
+          msg.sendLeaveMessage(app, m[1], event.channel);
+        }
+      } else {
+        if (await users.removeUser(event.user)) {
+          msg.sendLeaveMessage(app, event.user, event.channel);
+        }
+      }
+
+      return;
+    }
   } catch (error) {
     console.error(error);
   }

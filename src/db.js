@@ -55,6 +55,16 @@ let updatePerson = async person => {
   return person;
 };
 
+async function deletePerson(id) {
+  const client = getClient();
+  await client.connect();
+  const collection = client.db(database).collection("people");
+  const doc = await collection.deleteOne({ id: id });
+  await client.close();
+
+  return doc;
+}
+
 async function getMatches() {
   const client = getClient();
 
@@ -98,6 +108,7 @@ module.exports = {
     getPeople: getPeople,
     addPerson: addPerson,
     updatePerson: updatePerson,
+    deletePerson: deletePerson,
     getCount: getCount,
     getMatches: getMatches,
     addMatch: addMatch,

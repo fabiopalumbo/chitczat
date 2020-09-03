@@ -9,8 +9,7 @@ let sendPeopleMessage = async (app, channel) => {
 
   for (let i in people) {
     if (people[i].added) {
-      message +=
-        "<@" + people[i].id + ">, Region: " + people[i].location + "\n";
+      message += "<@" + people[i].id + ">, Region: " + people[i].location + "\n";
       joined = true;
     }
   }
@@ -22,9 +21,7 @@ let sendPeopleMessage = async (app, channel) => {
   try {
     const result = await app.client.chat.postMessage({
       token: token,
-      // Channel to send message to
       channel: channel,
-      // Include a button in the message (or whatever blocks you want!)
       blocks: [
         {
           type: "section",
@@ -33,39 +30,52 @@ let sendPeopleMessage = async (app, channel) => {
             text: message
           }
         }
-      ],
-      // Text in the notification
-      text: "People who joined"
+      ]
     });
   } catch (error) {
     console.error(error);
   }
 };
 
-let sendJoinedMessage = async (app, user_id, text, channel) => {
+let sendJoinedMessage = async (app, userId, text, channel) => {
   try {
     const result = await app.client.chat.postMessage({
       token: token,
-      // Channel to send message to
       channel: channel,
-      // Include a button in the message (or whatever blocks you want!)
       blocks: [
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text:
-              `<@${user_id}> joined` + (text === "" ? "!" : ` from ${text}!`)
+            text: `<@${userId}> joined` + (text === "" ? "!" : ` from ${text}!`)
           }
         }
-      ],
-      // Text in the notification
-      text: "Message from Test App"
+      ]
     });
   } catch (error) {
     console.error(error);
   }
 };
+
+async function sendLeaveMessage(app, userId, channel) {
+  try {
+    const result = await app.client.chat.postMessage({
+      token: token,
+      channel: channel,
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `<@${userId}> left the chat queue.`
+          }
+        }
+      ]
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 let sendMatchesMessage = async (app, matches, channel) => {
   let people = await db.getPeople();
@@ -87,9 +97,7 @@ let sendMatchesMessage = async (app, matches, channel) => {
   try {
     const result = await app.client.chat.postMessage({
       token: token,
-      // Channel to send message to
       channel: channel,
-      // Include a button in the message (or whatever blocks you want!)
       blocks: [
         {
           type: "section",
@@ -111,6 +119,7 @@ module.exports = {
   msg: {
     sendPeopleMessage: sendPeopleMessage,
     sendMatchesMessage: sendMatchesMessage,
-    sendJoinedMessage: sendJoinedMessage
+    sendJoinedMessage: sendJoinedMessage,
+    sendLeaveMessage: sendLeaveMessage
   }
 };
