@@ -49,10 +49,10 @@ let updatePerson = async person => {
   const client = getClient();
   await client.connect();
   const collection = client.db(database).collection("people");
-  person = await collection.replaceOne({ id: person.id }, person);
+  const result = await collection.update({ id: person.id }, { $set: person });
   await client.close();
 
-  return person;
+  return result;
 };
 
 async function getMatches() {
