@@ -1,14 +1,11 @@
+const user = process.env.MONGODB_USER;
 const password = process.env.MONGODB_PASSWORD;
+const server = process.env.MONGODB_SERVER;
 const database = process.env.MONGODB_DATABASE;
 
 const MongoClient = require("mongodb").MongoClient;
 
-const uri =
-  "mongodb+srv://admin:" +
-  password +
-  "@cluster0-zvhpj.mongodb.net/" +
-  database +
-  "?retryWrites=true&w=majority";
+const uri = `mongodb://${user}:${password}@${server}/${database}`;
 
 function getClient() {
   return new MongoClient(uri, {

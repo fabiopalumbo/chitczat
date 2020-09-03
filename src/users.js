@@ -1,6 +1,7 @@
 const { db } = require("./db");
 const { matchPeople } = require("./matching");
 
+
 async function addUser(user_id, location) {
   let u = undefined;
   let people = await db.getPeople();
