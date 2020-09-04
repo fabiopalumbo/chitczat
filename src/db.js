@@ -10,7 +10,7 @@ const uri = `mongodb://${user}:${password}@${server}/${database}`;
 function getClient() {
   return new MongoClient(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   });
 }
 
@@ -22,7 +22,7 @@ let getPeople = async () => {
   const collection = client.db(database).collection("people");
 
   const docs = await collection.find({}).toArray();
-  docs.forEach(doc => {
+  docs.forEach((doc) => {
     people[doc.index] = doc;
   });
 
@@ -35,7 +35,7 @@ let getCount = async () => {
   return Object.keys(people).length + 1;
 };
 
-let addPerson = async person => {
+let addPerson = async (person) => {
   const client = getClient();
   await client.connect();
   const collection = client.db(database).collection("people");
@@ -45,7 +45,7 @@ let addPerson = async person => {
   return person;
 };
 
-let updatePerson = async person => {
+let updatePerson = async (person) => {
   const client = getClient();
   await client.connect();
   const collection = client.db(database).collection("people");
@@ -63,7 +63,7 @@ async function getMatches() {
 
   let allMatches = [];
   const docs = await collection.find({}).toArray();
-  docs.forEach(doc => {
+  docs.forEach((doc) => {
     allMatches.push(doc.matches);
   });
 
@@ -101,6 +101,6 @@ module.exports = {
     getCount: getCount,
     getMatches: getMatches,
     addMatch: addMatch,
-    reset: reset
-  }
+    reset: reset,
+  },
 };

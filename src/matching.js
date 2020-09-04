@@ -383,10 +383,10 @@ function matchPeople(matches, people) {
   return {
     result: m.length > 0,
     matches: matches,
-    match: m
+    match: m,
   };
 }
 
 module.exports = {
-  matchPeople: matchPeople
+  matchPeople: matchPeople,
 };

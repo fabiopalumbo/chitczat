@@ -8,7 +8,7 @@ const token = process.env.SLACK_BOT_TOKEN;
 
 const app = new App({
   token: token,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
 const chatChannel = process.env.CHAT_CHANNEL;
@@ -18,7 +18,7 @@ app.event("message", async ({ event, context }) => {
   try {
     let conversation = await app.client.conversations.info({
       token: token,
-      channel: event.channel
+      channel: event.channel,
     });
 
     if (!conversation.ok || conversation.channel.name != chatChannel) return;
@@ -26,7 +26,7 @@ app.event("message", async ({ event, context }) => {
     // Join channel
     await app.client.conversations.join({
       token: token,
-      channel: event.channel
+      channel: event.channel,
     });
 
     if (event.text.startsWith("!match")) {

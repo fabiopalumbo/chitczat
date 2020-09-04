@@ -9,7 +9,8 @@ let sendPeopleMessage = async (app, channel) => {
 
   for (let i in people) {
     if (people[i].added) {
-      message += "<@" + people[i].id + ">, Region: " + people[i].location + "\n";
+      message +=
+        "<@" + people[i].id + ">, Region: " + people[i].location + "\n";
       joined = true;
     }
   }
@@ -22,7 +23,7 @@ let sendPeopleMessage = async (app, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      text: message
+      text: message,
     });
   } catch (error) {
     console.error(error);
@@ -34,7 +35,7 @@ let sendJoinedMessage = async (app, userId, text, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      text: `<@${userId}> joined` + (text === "" ? "!" : ` from ${text}!`)
+      text: `<@${userId}> joined` + (text === "" ? "!" : ` from ${text}!`),
     });
   } catch (error) {
     console.error(error);
@@ -46,7 +47,7 @@ async function sendLeaveMessage(app, userId, channel) {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      text: `<@${userId}> left the chat queue.`
+      text: `<@${userId}> left the chat queue.`,
     });
   } catch (error) {
     console.error(error);
@@ -74,7 +75,7 @@ let sendMatchesMessage = async (app, matches, channel) => {
     const result = await app.client.chat.postMessage({
       token: token,
       channel: channel,
-      text: message
+      text: message,
     });
   } catch (error) {
     console.error(error);
@@ -86,6 +87,6 @@ module.exports = {
     sendPeopleMessage: sendPeopleMessage,
     sendMatchesMessage: sendMatchesMessage,
     sendJoinedMessage: sendJoinedMessage,
-    sendLeaveMessage: sendLeaveMessage
-  }
+    sendLeaveMessage: sendLeaveMessage,
+  },
 };

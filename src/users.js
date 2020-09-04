@@ -17,7 +17,7 @@ async function addUser(userId, location) {
       id: userId,
       added: true,
       location: location,
-      index: index
+      index: index,
     };
 
     await db.addPerson(people[index]);
@@ -72,6 +72,6 @@ module.exports = {
   users: {
     addUser: addUser,
     removeUser: removeUser,
-    matchUsers: matchUsers
-  }
+    matchUsers: matchUsers,
+  },
 };
