@@ -3,8 +3,20 @@ How to run
 
 1. Install MongoDB or create a cloud mongodb instance (cloud.mongodb.com)
 2. Create a new app for slack (https://api.slack.com/apps?new_app=1)
-3. Fill out .env secrets
-4. Start the app
+3. Fill out .env secrets, i.e:
+    - SLACK_BOT_TOKEN=xoxb-1337236306854-1320173441095-pW1zXUhZ86GAso3Dy2sZWV7t
+    - SLACK_SIGNING_SECRET=db1fab5a0872ba5fb198cb9f94c3138c
+    - CHAT_CHANNEL=chitczat
+    - MONGODB_USER=chitczat
+    - MONGODB_PASSWORD=chitczat
+    - MONGODB_SERVER=localhost:27017
+    - MONGODB_DATABASE=chitczat
+4. Install a proxy tunnel with `npm install -g localtunnel` and run it `lt --port 3000`
+5. After that use the provided url from the `lt` command and paste it in the "**Event Subscriptions**" slack configuration's tab with `/slack/events` at the end 
+6. Below in the "**Subscribe to bot events**" add `message:channels` event and save.
+7. Go to "**Incoming Webhooks**", enable it and save
+8. Go to "**Oauth and Permissons**" and add `channels:join` to "**Bot Token Scopes**"
+9. Start the app with `npm start`
 
 ------------
 
