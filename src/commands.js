@@ -1,20 +1,18 @@
 const { msg } = require("./messages");
 const { users } = require("./users");
-
-const commands = ["!join", "!match", "!people", "!leave", "!add", "!reset"];
-
-const findCommand = (text) =>
-  commands.find((command) => text.startsWith(command));
+const { findAction } = require("./actions");
 
 const executeCommand = async (app, text, channel, user) => {
-  const command = findCommand(text);
-  const textWithoutCommand = text.replace(command, "").trim();
+  const action = findAction(text);
+  if (!action) return;
+
+  const textWithoutAction = text.replace(action.id, "").trim();
 
   try {
-    switch (command) {
+    switch (action.id) {
       case "!join": {
-        if (await users.addUser(user, textWithoutCommand)) {
-          msg.sendJoinedMessage(app, user, textWithoutCommand, channel);
+        if (await users.addUser(user, textWithoutAction)) {
+          msg.sendJoinedMessage(app, user, textWithoutAction, channel);
         }
         break;
       }
@@ -55,6 +53,10 @@ const executeCommand = async (app, text, channel, user) => {
         break;
       }
 
+      case "!help": {
+        msg.sendHelpMessage(app, channel);
+      }
+
       default:
         break;
     }
@@ -64,7 +66,5 @@ const executeCommand = async (app, text, channel, user) => {
 };
 
 module.exports = {
-  commands,
-  findCommand,
   executeCommand,
 };

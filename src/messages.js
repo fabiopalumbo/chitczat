@@ -1,11 +1,12 @@
 const { db } = require("./db");
+const { actions } = require("./actions");
 
 const token = process.env.SLACK_BOT_TOKEN;
 
-let sendPeopleMessage = async (app, channel) => {
+const sendPeopleMessage = async (app, channel) => {
   let message = "People who joined the queue: \n\n";
   let joined = false;
-  let people = await db.getPeople();
+  const people = await db.getPeople();
 
   for (let i in people) {
     if (people[i].added) {
@@ -30,7 +31,7 @@ let sendPeopleMessage = async (app, channel) => {
   }
 };
 
-let sendJoinedMessage = async (app, userId, text, channel) => {
+const sendJoinedMessage = async (app, userId, text, channel) => {
   try {
     const result = await app.client.chat.postMessage({
       token: token,
@@ -42,7 +43,7 @@ let sendJoinedMessage = async (app, userId, text, channel) => {
   }
 };
 
-async function sendLeaveMessage(app, userId, channel) {
+const sendLeaveMessage = async (app, userId, channel) => {
   try {
     const result = await app.client.chat.postMessage({
       token: token,
@@ -52,10 +53,10 @@ async function sendLeaveMessage(app, userId, channel) {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
-let sendMatchesMessage = async (app, matches, channel) => {
-  let people = await db.getPeople();
+const sendMatchesMessage = async (app, matches, channel) => {
+  const people = await db.getPeople();
   let message = "";
 
   if (matches.length == 0) {
@@ -82,11 +83,29 @@ let sendMatchesMessage = async (app, matches, channel) => {
   }
 };
 
+const sendHelpMessage = async (app, channel) => {
+  const message = actions.reduce(
+    (acc, { id, description }) => `${acc}*${id}*\t -\t ${description}\n`,
+    ""
+  );
+
+  try {
+    const result = await app.client.chat.postMessage({
+      token: token,
+      channel: channel,
+      text: message,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   msg: {
-    sendPeopleMessage: sendPeopleMessage,
-    sendMatchesMessage: sendMatchesMessage,
-    sendJoinedMessage: sendJoinedMessage,
-    sendLeaveMessage: sendLeaveMessage,
+    sendPeopleMessage,
+    sendMatchesMessage,
+    sendJoinedMessage,
+    sendLeaveMessage,
+    sendHelpMessage,
   },
 };
